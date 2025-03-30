@@ -6,6 +6,8 @@ import RegistryConfig from '../components/terragrunt/RegistryConfig';
 import Switch from '../components/ui/Switch';
 
 const SettingsPage: React.FC = () => {
+  const [activeTab, setActiveTab] = React.useState('general');
+  
   const tabs = [
     {
       id: 'general',
@@ -147,7 +149,15 @@ const SettingsPage: React.FC = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
       
-      <Tabs tabs={tabs} defaultTab="general" />
+      <Tabs 
+        tabs={tabs.map(tab => ({ id: tab.id, label: tab.label }))} 
+        activeTab={activeTab} 
+        onChange={setActiveTab} 
+      />
+      
+      <div className="mt-6">
+        {tabs.find(tab => tab.id === activeTab)?.content}
+      </div>
     </div>
   );
 };

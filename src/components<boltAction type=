@@ -1,0 +1,84 @@
+import React from 'react';
+
+interface SwitchProps {
+  id: string;
+  label?: string;
+  description?: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+const Switch: React.FC<SwitchProps> = ({
+  id,
+  label,
+  description,
+  checked,
+  onChange,
+  disabled = false,
+  size = 'md',
+  className = '',
+}) => {
+  const sizeClasses = {
+    sm: {
+      switch: 'w-8 h-4',
+      dot: 'h-3 w-3',
+      translate: 'translate-x-4',
+    },
+    md: {
+      switch: 'w-11 h-6',
+      dot: 'h-5 w-5',
+      translate: 'translate-x-5',
+    },
+    lg: {
+      switch: 'w-14 h-7',
+      dot: 'h-6 w-6',
+      translate: 'translate-x-7',
+    },
+  };
+
+  return (
+    <div className={`flex items-start ${className}`}>
+      <div className="flex items-center h-5">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={checked}
+          disabled={disabled}
+          className={`
+            ${checked ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}
+            ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+            relative inline-flex flex-shrink-0 ${sizeClasses[size].switch} border-2 border-transparent rounded-full
+            transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+          `}
+          onClick={() => !disabled && onChange(!checked)}
+          id={id}
+        >
+          <span
+            className={`
+              ${checked ? sizeClasses[size].translate : 'translate-x-0'}
+              pointer-events-none inline-block ${sizeClasses[size].dot} rounded-full bg-white shadow
+              transform ring-0 transition ease-in-out duration-200
+            `}
+          />
+        </button>
+      </div>
+      {(label || description) && (
+        <div className="ml-3">
+          {label && (
+            <label htmlFor={id} className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer">
+              {label}
+            </label>
+          )}
+          {description && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Switch;

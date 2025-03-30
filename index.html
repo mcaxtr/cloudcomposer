@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CloudComposer - Terragrunt Infrastructure Management</title>
+    <!-- Add AWS SDK via CDN to avoid npm dependency issues -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1386.0.min.js"></script>
+    <script>
+      // Configure AWS SDK globally to avoid CORS issues
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.AWS) {
+          // Set default configuration
+          window.AWS.config.update({
+            signatureVersion: 'v4',
+            s3ForcePathStyle: true,
+            computeChecksums: true,
+            correctClockSkew: true,
+            httpOptions: {
+              xhrWithCredentials: false
+            }
+          });
+          
+          // Disable browser cache for API requests
+          window.AWS.config.update({
+            httpOptions: {
+              timeout: 30000, // 30 seconds
+              headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+              }
+            }
+          });
+          
+          console.log('AWS SDK configured successfully');
+        } else {
+          console.error('AWS SDK not loaded');
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
